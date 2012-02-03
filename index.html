@@ -4,16 +4,28 @@
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
     <script type="text/javascript">
       google.load("jquery", "1.7.1");
+      google.load("jqueryui", "1.8.16");
     </script>
+    <script type="text/javascript" src="/static/colorpicker/js/colorpicker.js"></script>
+    <link rel="stylesheet" href="/static/colorpicker/css/colorpicker.css" type="text/css" media="screen" />
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="/client/app.js"></script>
     <style type="text/css" media="screen">
-      canvas { border: 1px solid black; }
+      canvas {
+        border: 1px solid black;
+        display: block;
+      }
+      .colorpick {
+        border: 1px solid black;
+        padding: 0 2px;
+       }
+      .colorpick > input { border: none; }
     </style>
   </head>
   <body>
     <h1>Draw with node</h1>
     <p>Amount of visitors: <span id="num_listeners"></span></p>
+    <span class="colorpick">Color: #<input type="text" id="color" value="ff0000"/></span>
     <canvas id="c" width="700" height="400"></canvas>
   </body>
 </html>

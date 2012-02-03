@@ -1,8 +1,11 @@
 socket = io.connect()
 
 $ ->
+  $("#color").ColorPicker({onChange: (hsb, hex, rgb, el) ->
+    $("#color").val(hex)
+  })
   canvas = $("#c")
-  console.log("canvas")
+  console.log canvas
   context = canvas.get(0).getContext("2d")
   currentLine = null
   getCoord = (event, canvas) ->
@@ -11,7 +14,9 @@ $ ->
     console.log [x,y]
     return [x,y]
   canvas.on "mousedown", (event) ->
-    currentLine = [getCoord(event, this)]
+    color = $("#color").text()
+    console.log "color is: " + color
+    currentLine = [color, getCoord(event, this)]
     console.log "begin listening for coordinates"
   canvas.on "mousemove", (event) ->
     if currentLine

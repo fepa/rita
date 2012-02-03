@@ -4,8 +4,13 @@ socket = io.connect();
 
 $(function() {
   var canvas, context, currentLine, getCoord;
+  $("#color").ColorPicker({
+    onChange: function(hsb, hex, rgb, el) {
+      return $("#color").val(hex);
+    }
+  });
   canvas = $("#c");
-  console.log("canvas");
+  console.log(canvas);
   context = canvas.get(0).getContext("2d");
   currentLine = null;
   getCoord = function(event, canvas) {
@@ -16,7 +21,10 @@ $(function() {
     return [x, y];
   };
   canvas.on("mousedown", function(event) {
-    currentLine = [getCoord(event, this)];
+    var color;
+    color = $("#color").text();
+    console.log("color is: " + color);
+    currentLine = [color, getCoord(event, this)];
     return console.log("begin listening for coordinates");
   });
   canvas.on("mousemove", function(event) {
