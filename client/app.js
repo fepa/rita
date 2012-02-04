@@ -22,9 +22,9 @@ $(function() {
   };
   canvas.on("mousedown", function(event) {
     var color;
-    color = $("#color").text();
+    color = $("#color").val();
     console.log("color is: " + color);
-    currentLine = [color, getCoord(event, this)];
+    currentLine = [getCoord(event, this)];
     return console.log("begin listening for coordinates");
   });
   canvas.on("mousemove", function(event) {
@@ -50,6 +50,7 @@ $(function() {
     context.moveTo.apply(context, msg.shift());
     for (_i = 0, _len = msg.length; _i < _len; _i++) {
       coord = msg[_i];
+      console.log("Koooordaz" + coord);
       context.lineTo.apply(context, coord);
     }
     return context.stroke();

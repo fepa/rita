@@ -14,9 +14,10 @@ $ ->
     console.log [x,y]
     return [x,y]
   canvas.on "mousedown", (event) ->
-    color = $("#color").text()
+    color = $("#color").val()
     console.log "color is: " + color
-    currentLine = [color, getCoord(event, this)]
+    # currentLine = [color, getCoord(event, this)]
+    currentLine = [getCoord(event, this)]
     console.log "begin listening for coordinates"
   canvas.on "mousemove", (event) ->
     if currentLine
@@ -34,5 +35,6 @@ $ ->
     console.log msg
     context.moveTo(msg.shift()...)
     for coord in msg
+      console.log "Koooordaz" + coord
       context.lineTo(coord...)
     context.stroke()
