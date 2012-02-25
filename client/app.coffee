@@ -5,24 +5,19 @@ $ ->
     $("#color").val(hex)
   })
   canvas = $("#c")
-  console.log canvas
   context = canvas.get(0).getContext("2d")
   currentLine = null
   getCoord = (event, canvas) ->
     x = event.pageX - canvas.offsetLeft
     y = event.pageY - canvas.offsetTop
-    console.log [x,y]
     return [x,y]
   canvas.on "mousedown", (event) ->
     color = $("#color").val()
-    console.log "color is: " + color
-    # currentLine = [color, getCoord(event, this)]
-    currentLine = [getCoord(event, this)]
-    console.log "begin listening for coordinates"
+    console.log color
+    currentLine = [color, getCoord(event, this)]
   canvas.on "mousemove", (event) ->
     if currentLine
       currentLine.push getCoord(event, this)
-      console.log currentLine.length
   canvas.on "mouseup", (event) ->
     if currentLine
       console.log "trying to post " + currentLine
@@ -32,9 +27,10 @@ $ ->
       currentLine = null
 
   socket.on "line", (msg) ->
-    console.log msg
+    context.beginPath()
+    context.strokeStyle = msg.shift() # Pop color from array
     context.moveTo(msg.shift()...)
     for coord in msg
-      console.log "Koooordaz" + coord
       context.lineTo(coord...)
     context.stroke()
+    context.closePath()

@@ -10,28 +10,22 @@ $(function() {
     }
   });
   canvas = $("#c");
-  console.log(canvas);
   context = canvas.get(0).getContext("2d");
   currentLine = null;
   getCoord = function(event, canvas) {
     var x, y;
     x = event.pageX - canvas.offsetLeft;
     y = event.pageY - canvas.offsetTop;
-    console.log([x, y]);
     return [x, y];
   };
   canvas.on("mousedown", function(event) {
     var color;
     color = $("#color").val();
-    console.log("color is: " + color);
-    currentLine = [getCoord(event, this)];
-    return console.log("begin listening for coordinates");
+    console.log(color);
+    return currentLine = [color, getCoord(event, this)];
   });
   canvas.on("mousemove", function(event) {
-    if (currentLine) {
-      currentLine.push(getCoord(event, this));
-      return console.log(currentLine.length);
-    }
+    if (currentLine) return currentLine.push(getCoord(event, this));
   });
   canvas.on("mouseup", function(event) {
     if (currentLine) {
@@ -46,13 +40,14 @@ $(function() {
   });
   return socket.on("line", function(msg) {
     var coord, _i, _len;
-    console.log(msg);
+    context.beginPath();
+    context.strokeStyle = msg.shift();
     context.moveTo.apply(context, msg.shift());
     for (_i = 0, _len = msg.length; _i < _len; _i++) {
       coord = msg[_i];
-      console.log("Koooordaz" + coord);
       context.lineTo.apply(context, coord);
     }
-    return context.stroke();
+    context.stroke();
+    return context.closePath();
   });
 });
