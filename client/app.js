@@ -19,13 +19,24 @@ $(function() {
     return [x, y];
   };
   canvas.on("mousedown", function(event) {
-    var color;
+    var color, coord;
     color = $("#color").val();
-    console.log(color);
-    return currentLine = [color, getCoord(event, this)];
+    coord = getCoord(event, this);
+    currentLine = [color, coord];
+    context.strokeStyle = color;
+    context.lineWidth = 10;
+    return context.lineCap = "round";
   });
   canvas.on("mousemove", function(event) {
-    if (currentLine) return currentLine.push(getCoord(event, this));
+    var coord;
+    if (currentLine) {
+      coord = getCoord(event, this);
+      currentLine.push(coord);
+      context.beginPath();
+      context.moveTo(coord[0] - 0.001, coord[1] - 0.001);
+      context.lineTo(coord[0], coord[1]);
+      return context.stroke();
+    }
   });
   canvas.on("mouseup", function(event) {
     if (currentLine) {
@@ -35,7 +46,8 @@ $(function() {
       }, function(data) {
         return $("#num_listeners").text(data.listeners);
       }, "json");
-      return currentLine = null;
+      currentLine = null;
+      return context.closePath();
     }
   });
   return socket.on("line", function(msg) {
