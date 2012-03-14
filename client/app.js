@@ -40,14 +40,8 @@ $(function() {
   });
   canvas.on("mouseup", function(event) {
     if (currentLine) {
-      console.log("trying to post " + currentLine);
-      $.post("/line", {
-        line: currentLine
-      }, function(data) {
-        return $("#num_listeners").text(data.listeners);
-      }, "json");
-      currentLine = null;
-      return context.closePath();
+      socket.send(JSON.stringify(currentLine));
+      return currentLine = null;
     }
   });
   return socket.on("line", function(msg) {

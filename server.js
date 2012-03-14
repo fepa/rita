@@ -22,25 +22,15 @@ app.use(express.logger());
 
 app.use(express.static(__dirname));
 
-app.post("/line", function(req, res, next) {
-  console.log(req.body);
-  return pub.publish("line", JSON.stringify(req.body.line), function(err, num) {
-    if (err) {
-      res.send(err, 500);
-    } else {
-      res.send({
-        listeners: num
-      });
-    }
-    return console.log(err, num);
-  });
-});
-
 io.sockets.on("connection", function(socket) {
   sub.subscribe("line");
-  return sub.on("message", function(channel, msg) {
-    console.log(msg);
+  sub.on("message", function(channel, msg) {
     return socket.emit(channel, JSON.parse(msg));
+  });
+  return socket.on("message", function(msg) {
+    return pub.publish("line", msg, function(err, num) {
+      return console.log(err, num);
+    });
   });
 });
 

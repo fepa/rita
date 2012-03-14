@@ -32,12 +32,8 @@ $ ->
       context.stroke()
   canvas.on "mouseup", (event) ->
     if currentLine
-      console.log "trying to post " + currentLine
-      $.post "/line", {line: currentLine}, (data) ->
-        $("#num_listeners").text(data.listeners)
-      , "json"
+      socket.send JSON.stringify(currentLine)
       currentLine = null
-      context.closePath()
 
   socket.on "line", (msg) ->
     context.beginPath()
