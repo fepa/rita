@@ -15,11 +15,12 @@ $ ->
 
   canvas.on "mousedown", (event) ->
     color = $("#color").val()
+    width = $("#width").val()
     coord = getCoord(event, this)
-    currentLine = [color, coord]
+    currentLine = [color, width, coord]
     # Configure line
     context.strokeStyle = color
-    context.lineWidth = 10;
+    context.lineWidth = width;
     context.lineCap = "round"
   canvas.on "mousemove", (event) ->
     if currentLine
@@ -38,6 +39,7 @@ $ ->
   socket.on "line", (msg) ->
     context.beginPath()
     context.strokeStyle = msg.shift() # Pop color from array
+    context.lineWidth = msg.shift() # Pop line width from array
     context.moveTo(msg.shift()...)
     for coord in msg
       context.lineTo(coord...)
