@@ -19,12 +19,13 @@ $(function() {
     return [x, y];
   };
   canvas.on("mousedown", function(event) {
-    var color, coord;
+    var color, coord, width;
     color = $("#color").val();
+    width = $("#width").val();
     coord = getCoord(event, this);
-    currentLine = [color, coord];
+    currentLine = [color, width, coord];
     context.strokeStyle = color;
-    context.lineWidth = 10;
+    context.lineWidth = width;
     return context.lineCap = "round";
   });
   canvas.on("mousemove", function(event) {
@@ -48,6 +49,7 @@ $(function() {
     var coord, _i, _len;
     context.beginPath();
     context.strokeStyle = msg.shift();
+    context.lineWidth = msg.shift();
     context.moveTo.apply(context, msg.shift());
     for (_i = 0, _len = msg.length; _i < _len; _i++) {
       coord = msg[_i];
